@@ -1,17 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <MessagesContainer :data="conversation" />
+    <ComposeContainer />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import MessagesContainer from "./components/MessagesContainer.vue";
+import ComposeContainer from "./components/ComposeContainer.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    MessagesContainer,
+    ComposeContainer,
+  },
+  data() {
+    return {
+      loading: false,
+      data: {},
+    };
+  },
+  methods: {
+    ...mapActions(["fetchCurrentUser", "fetchConversation"]),
+  },
+  created() {
+    this.fetchCurrentUser();
+    this.fetchConversation();
+  },
+  computed: {
+    ...mapState(["conversation", "currentUser"]),
   },
 };
 </script>
